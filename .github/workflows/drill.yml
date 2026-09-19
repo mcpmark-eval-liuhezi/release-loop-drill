@@ -1,0 +1,29 @@
+name: Drill CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate manifest
+        run: |
+          echo "release-loop-drill manifest - generated $(date -u +%Y-%m-%dT%H:%M:%SZ)" > drill-manifest.txt
+
+      - name: Show manifest contents
+        run: cat drill-manifest.txt
+
+      - name: Upload drill-manifest artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: drill-manifest
+          path: drill-manifest.txt
+          if-no-files-found: error
